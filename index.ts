@@ -165,9 +165,9 @@ export class Configurator<D extends Record<string, unknown>> {
     const defaultPropertyValue =
       this.#getPropertyFromDefaultValues(propertyName)
 
-    return !!(
+    return Boolean(
       !defaultPropertyValue.propertyFound ||
-      userPropertyValue.propertyValue !== defaultPropertyValue.propertyValue
+        userPropertyValue.propertyValue !== defaultPropertyValue.propertyValue
     )
   }
 }

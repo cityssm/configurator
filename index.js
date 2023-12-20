@@ -67,7 +67,7 @@ export class Configurator {
             return false;
         }
         const defaultPropertyValue = this.#getPropertyFromDefaultValues(propertyName);
-        return !!(!defaultPropertyValue.propertyFound ||
+        return Boolean(!defaultPropertyValue.propertyFound ||
             userPropertyValue.propertyValue !== defaultPropertyValue.propertyValue);
     }
 }
