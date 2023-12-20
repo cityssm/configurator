@@ -6,6 +6,10 @@
     "node": ">=18.0.0"
   },
   "description": "Handles Node application configuration files. Includes default values and helper functions.",
+  "keywords": [
+    "configuration",
+    "config-files"
+  ],
   "exports": "./index.js",
   "scripts": {
     "test": "mocha --timeout 60000",
