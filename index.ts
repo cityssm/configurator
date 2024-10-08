@@ -56,8 +56,7 @@ export class Configurator<D extends Record<string, unknown>> {
       }
     }
 
-    let currentObject: Record<string, unknown> | unknown =
-      this.#userConfiguration
+    let currentObject: unknown = this.#userConfiguration
 
     /*
      * Split the propertyName and search the userConfig
@@ -154,7 +153,7 @@ export class Configurator<D extends Record<string, unknown>> {
    * @param propertyName - The property key.
    * @returns `true` if the user configuration has a different value compared to the default.
    */
-  isDefaultValueOverwritten<K extends keyof D>(propertyName: K): boolean {
+  isDefaultValueOverwritten(propertyName: keyof D): boolean {
     const userPropertyValue =
       this.#getPropertyFromUserConfiguration(propertyName)
 

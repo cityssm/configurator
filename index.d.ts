@@ -42,5 +42,5 @@ export declare class Configurator<D extends Record<string, unknown>> {
      * @param propertyName - The property key.
      * @returns `true` if the user configuration has a different value compared to the default.
      */
-    isDefaultValueOverwritten<K extends keyof D>(propertyName: K): boolean;
+    isDefaultValueOverwritten(propertyName: keyof D): boolean;
 }
