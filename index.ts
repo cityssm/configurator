@@ -1,5 +1,5 @@
-// eslint-disable-next-line eslint-comments/disable-enable-pair
-/* eslint-disable @typescript-eslint/indent, security/detect-object-injection */
+// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
+/* eslint-disable security/detect-object-injection */
 
 type PropertyValue<V> =
   | {
@@ -16,10 +16,10 @@ export class Configurator<D extends Record<string, unknown>> {
 
   /**
    * Initializes the Configurator.
-   * @param {Record<string, unknown>} defaultValues - An object with the property values to use when not set in the userConfig.
+   * @param defaultValues - An object with the property values to use when not set in the userConfig.
    *  All keys should correspond to the value being returned.
    *  ex. { propertyOne: 5, 'propertyTwo.inner': 'value' }
-   * @param {Record<string, unknown>} userConfiguration - The values that should be used when available.
+   * @param userConfiguration - The values that should be used when available.
    *  ex. { propertyOne: 7, propertyTwo: { inner: 'userValue' } }
    */
   constructor(
@@ -32,7 +32,7 @@ export class Configurator<D extends Record<string, unknown>> {
 
   /**
    * Updates the user configuration.
-   * @param {Record<string, unknown>} userConfiguration - The values that should be used when available.
+   * @param userConfiguration - The values that should be used when available.
    *  ex. { propertyOne: 7, propertyTwo: { inner: 'userValue' } }
    */
   setUserConfig(userConfiguration: Record<string, unknown>): void {
@@ -106,9 +106,9 @@ export class Configurator<D extends Record<string, unknown>> {
    * - User configuration
    * - Default values
    * - Fallback value
-   * @param {string} propertyName - The property key.
-   * @param {unknown} fallbackValue - An optional value if the property is not found in the user configuration or the default values.
-   * @returns {unknown} A property value.
+   * @param propertyName - The property key.
+   * @param fallbackValue - An optional value if the property is not found in the user configuration or the default values.
+   * @returns A property value.
    */
   getConfigProperty<K extends keyof D>(
     propertyName: K | string,
@@ -133,8 +133,8 @@ export class Configurator<D extends Record<string, unknown>> {
 
   /**
    * Checks if the property has been set in the user configuration.
-   * @param {string} propertyName - The property key.
-   * @returns {boolean} Whether or not the property key is found in the user configuration.
+   * @param propertyName - The property key.
+   * @returns `true` if the property key is found in the user configuration.
    */
   isPropertyInUserConfig(propertyName: string): boolean {
     return this.#getPropertyFromUserConfiguration(propertyName).propertyFound
@@ -142,8 +142,8 @@ export class Configurator<D extends Record<string, unknown>> {
 
   /**
    * Checks if the property has been set in the default values object.
-   * @param {string} propertyName - The property key.
-   * @returns {boolean} Whether or not the property key is found in the default values object.
+   * @param propertyName - The property key.
+   * @returns `true` if the property key is found in the default values object.
    */
   isPropertyInDefaultValues(propertyName: string): boolean {
     return this.#getPropertyFromDefaultValues(propertyName).propertyFound
@@ -151,8 +151,8 @@ export class Configurator<D extends Record<string, unknown>> {
 
   /**
    * Checks if the default value for the property has been overwritten with a different value in the user configuration.
-   * @param {string} propertyName - The property key.
-   * @returns {boolean} Whether or not the user configuration has a different value compared to the default.
+   * @param propertyName - The property key.
+   * @returns `true` if the user configuration has a different value compared to the default.
    */
   isDefaultValueOverwritten<K extends keyof D>(propertyName: K): boolean {
     const userPropertyValue =
