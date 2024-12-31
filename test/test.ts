@@ -1,8 +1,9 @@
 import assert from 'node:assert'
+import { describe, it } from 'node:test'
 
 import { Configurator } from '../index.js'
 
-describe('configurator', () => {
+await describe('configurator', async () => {
   const userConfig = {
     obj: {
       str: 'user string'
@@ -20,7 +21,7 @@ describe('configurator', () => {
 
   const config = new Configurator(defaultValues, userConfig)
 
-  it('returns a set user value string', () => {
+  await it('returns a set user value string', () => {
     const value = config.getConfigProperty('obj.str')
     assert.strictEqual(value, userConfig.obj.str)
     assert.notStrictEqual(value, defaultValues['obj.str'])
@@ -28,13 +29,13 @@ describe('configurator', () => {
     assert.ok(config.isDefaultValueOverwritten('obj.str'))
   })
 
-  it('returns a set user value with a dot separated key', () => {
+  await it('returns a set user value with a dot separated key', () => {
     const value = config.getConfigProperty('dot.separated')
     assert.strictEqual(value, userConfig['dot.separated'])
     assert.notStrictEqual(value, defaultValues['dot.separated'])
   })
 
-  it('returns a default value number', () => {
+  await it('returns a default value number', () => {
     const value = config.getConfigProperty('obj.num')
     assert.strictEqual(value, defaultValues['obj.num'])
     assert.ok(!config.isPropertyInUserConfig('obj.num'))
@@ -42,7 +43,7 @@ describe('configurator', () => {
     assert.ok(!config.isDefaultValueOverwritten('obj.num'))
   })
 
-  it('returns a fallback value', () => {
+  await it('returns a fallback value', () => {
     const value = config.getConfigProperty('unknown', 'test')
     assert.strictEqual(value, 'test')
     assert.ok(!config.isPropertyInUserConfig('unknown'))

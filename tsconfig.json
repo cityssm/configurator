@@ -6,7 +6,6 @@
     "isolatedModules": false,
     "declaration": true,
     "noImplicitAny": false,
-    "removeComments": false,
     "allowUnreachableCode": false,
     "allowSyntheticDefaultImports": true,
     "resolveJsonModule": true,
