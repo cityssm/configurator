@@ -1,5 +1,3 @@
-// eslint-disable-next-line @eslint-community/eslint-comments/disable-enable-pair
-/* eslint-disable security/detect-object-injection */
 export class Configurator {
     #defaultValues;
     #userConfiguration;
@@ -13,7 +11,57 @@ export class Configurator {
      */
     constructor(defaultValues, userConfiguration = {}) {
         this.#defaultValues = defaultValues;
-        this.setUserConfig(userConfiguration);
+        this.#userConfiguration = userConfiguration;
+    }
+    /**
+     * Retrieves a property value, checking in the following order.
+     * - User configuration
+     * - Default values
+     * - Fallback value
+     * @param propertyName - The property key.
+     * @param fallbackValue - An optional value if the property is not found in the user configuration or the default values.
+     * @returns A property value.
+     */
+    getConfigProperty(propertyName, fallbackValue) {
+        const userPropertyValue = this.#getPropertyFromUserConfiguration(propertyName);
+        if (userPropertyValue.propertyFound) {
+            return userPropertyValue.propertyValue;
+        }
+        const defaultPropertyValue = this.#getPropertyFromDefaultValues(propertyName);
+        if (defaultPropertyValue.propertyFound) {
+            return defaultPropertyValue.propertyValue;
+        }
+        return fallbackValue;
+    }
+    /**
+     * Checks if the default value for the property has been overwritten with a different value in the user configuration.
+     * @param propertyName - The property key.
+     * @returns `true` if the user configuration has a different value compared to the default.
+     */
+    isDefaultValueOverwritten(propertyName) {
+        const userPropertyValue = this.#getPropertyFromUserConfiguration(propertyName);
+        if (!userPropertyValue.propertyFound) {
+            return false;
+        }
+        const defaultPropertyValue = this.#getPropertyFromDefaultValues(propertyName);
+        return (!defaultPropertyValue.propertyFound ||
+            userPropertyValue.propertyValue !== defaultPropertyValue.propertyValue);
+    }
+    /**
+     * Checks if the property has been set in the default values object.
+     * @param propertyName - The property key.
+     * @returns `true` if the property key is found in the default values object.
+     */
+    isPropertyInDefaultValues(propertyName) {
+        return this.#getPropertyFromDefaultValues(propertyName).propertyFound;
+    }
+    /**
+     * Checks if the property has been set in the user configuration.
+     * @param propertyName - The property key.
+     * @returns `true` if the property key is found in the user configuration.
+     */
+    isPropertyInUserConfig(propertyName) {
+        return this.#getPropertyFromUserConfiguration(propertyName).propertyFound;
     }
     /**
      * Updates the user configuration.
@@ -22,6 +70,17 @@ export class Configurator {
      */
     setUserConfig(userConfiguration) {
         this.#userConfiguration = userConfiguration;
+    }
+    #getPropertyFromDefaultValues(propertyName) {
+        if (Object.hasOwn(this.#defaultValues, propertyName)) {
+            return {
+                propertyFound: true,
+                propertyValue: this.#defaultValues[propertyName]
+            };
+        }
+        return {
+            propertyFound: false
+        };
     }
     #getPropertyFromUserConfiguration(propertyName) {
         /*
@@ -54,66 +113,5 @@ export class Configurator {
             propertyFound: true,
             propertyValue: currentObject
         };
-    }
-    #getPropertyFromDefaultValues(propertyName) {
-        if (Object.hasOwn(this.#defaultValues, propertyName)) {
-            return {
-                propertyFound: true,
-                propertyValue: this.#defaultValues[propertyName]
-            };
-        }
-        return {
-            propertyFound: false
-        };
-    }
-    /**
-     * Retrieves a property value, checking in the following order.
-     * - User configuration
-     * - Default values
-     * - Fallback value
-     * @param propertyName - The property key.
-     * @param fallbackValue - An optional value if the property is not found in the user configuration or the default values.
-     * @returns A property value.
-     */
-    getConfigProperty(propertyName, fallbackValue) {
-        const userPropertyValue = this.#getPropertyFromUserConfiguration(propertyName);
-        if (userPropertyValue.propertyFound) {
-            return userPropertyValue.propertyValue;
-        }
-        const defaultPropertyValue = this.#getPropertyFromDefaultValues(propertyName);
-        if (defaultPropertyValue.propertyFound) {
-            return defaultPropertyValue.propertyValue;
-        }
-        return fallbackValue;
-    }
-    /**
-     * Checks if the property has been set in the user configuration.
-     * @param propertyName - The property key.
-     * @returns `true` if the property key is found in the user configuration.
-     */
-    isPropertyInUserConfig(propertyName) {
-        return this.#getPropertyFromUserConfiguration(propertyName).propertyFound;
-    }
-    /**
-     * Checks if the property has been set in the default values object.
-     * @param propertyName - The property key.
-     * @returns `true` if the property key is found in the default values object.
-     */
-    isPropertyInDefaultValues(propertyName) {
-        return this.#getPropertyFromDefaultValues(propertyName).propertyFound;
-    }
-    /**
-     * Checks if the default value for the property has been overwritten with a different value in the user configuration.
-     * @param propertyName - The property key.
-     * @returns `true` if the user configuration has a different value compared to the default.
-     */
-    isDefaultValueOverwritten(propertyName) {
-        const userPropertyValue = this.#getPropertyFromUserConfiguration(propertyName);
-        if (!userPropertyValue.propertyFound) {
-            return false;
-        }
-        const defaultPropertyValue = this.#getPropertyFromDefaultValues(propertyName);
-        return Boolean(!defaultPropertyValue.propertyFound ||
-            userPropertyValue.propertyValue !== defaultPropertyValue.propertyValue);
     }
 }
